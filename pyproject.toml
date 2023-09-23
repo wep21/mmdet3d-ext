@@ -1,0 +1,33 @@
+[project]
+name = "mmdet3d-ext"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "wep21", email = "daisuke.nishimatsu1021@gmail.com" }
+]
+dependencies = [
+    "mmdet3d==1.2.0",
+    "openmim==0.3.9",
+    "mmengine==0.8.4",
+    "torch==2.0.1",
+    "mmcv==2.0.0",
+    "mmdet>=3.1.0",
+]
+readme = "README.md"
+requires-python = ">= 3.10"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[[tool.rye.sources]]
+name = "mmcv"
+url = "https://download.openmmlab.com/mmcv/dist/cu117/torch2.0/index.html"
+type = "find-links"
