@@ -215,7 +215,7 @@ websocket-client==1.6.3
 werkzeug==2.2.3
 wheel==0.41.2
 widgetsnbextension==4.0.9
-yapf==0.40.2
+yapf==0.40.1
 zipp==3.17.0
 # The following packages are considered to be unsafe in a requirements file:
 pip==23.2.1

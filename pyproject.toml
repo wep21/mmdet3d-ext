@@ -12,6 +12,7 @@ dependencies = [
     "torch==2.0.1",
     "mmcv==2.0.0",
     "mmdet>=3.1.0",
+    "yapf==0.40.1",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
