@@ -29,6 +29,10 @@ dev-dependencies = []
 [tool.hatch.metadata]
 allow-direct-references = true
 
+[tool.hatch.build.targets.wheel.force-include]
+"src/tools" = "mmdet3d-ext/.mim/tools"
+"model-index.yml" = "mmdet3d-ext/.mim/model-index.yml"
+
 [[tool.rye.sources]]
 name = "mmcv"
 url = "https://download.openmmlab.com/mmcv/dist/cu117/torch2.0/index.html"
