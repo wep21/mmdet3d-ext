@@ -1,5 +1,5 @@
 [project]
-name = "mmdet3d-ext"
+name = "mmdet3d_ext"
 version = "0.1.0"
 description = "Add your description here"
 authors = [
@@ -24,7 +24,9 @@ build-backend = "hatchling.build"
 
 [tool.rye]
 managed = true
-dev-dependencies = []
+dev-dependencies = [
+    "ruff>=0.0.291",
+]
 
 [tool.hatch.metadata]
 allow-direct-references = true
@@ -37,3 +39,15 @@ allow-direct-references = true
 name = "mmcv"
 url = "https://download.openmmlab.com/mmcv/dist/cu117/torch2.0/index.html"
 type = "find-links"
+
+[tool.ruff]
+line-length = 120
+extend-select = ['Q', 'RUF100', 'C90', 'I']
+extend-ignore = [
+    'E501',  # ignore line too long and let black handle it
+    'E721',  # using type() instead of isinstance() - we use this in tests
+]
+flake8-quotes = {inline-quotes = 'single', multiline-quotes = 'double'}
+mccabe = { max-complexity = 13 }
+isort = { known-first-party = ['mmdet3d_ext'] }
+exclude = ['src/projects']

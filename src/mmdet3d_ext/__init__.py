@@ -1,2 +1,2 @@
 def hello():
-    return "Hello from mmdet3d-test!"
+    return 'Hello from mmdet3d-test!'
