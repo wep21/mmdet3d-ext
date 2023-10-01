@@ -99,6 +99,7 @@ mmcv==2.0.0
 mmdet==3.1.0
 mmdet3d==1.2.0
 mmengine==0.8.4
+mmyolo==0.6.0
 model-index==0.1.11
 mpmath==1.3.0
 mypy-extensions==1.0.0
@@ -143,6 +144,7 @@ platformdirs==3.10.0
 plotly==5.17.0
 pluggy==1.3.0
 plyfile==1.0.1
+prettytable==3.9.0
 prometheus-client==0.17.1
 prompt-toolkit==3.0.39
 protobuf==4.24.3
