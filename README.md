@@ -1,3 +1,3 @@
-# mmdet3d-ext
+# mmdet3d_ext
 
 Describe your project here.

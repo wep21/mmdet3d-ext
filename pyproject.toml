@@ -15,6 +15,7 @@ dependencies = [
     "yapf==0.40.1",
     "numpy<1.24",
     "mmyolo>=0.6.0",
+    "wandb>=0.15.12",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
@@ -33,8 +34,8 @@ dev-dependencies = [
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel.force-include]
-"src/tools" = "mmdet3d-ext/.mim/tools"
-"model-index.yml" = "mmdet3d-ext/.mim/model-index.yml"
+"src/tools" = "mmdet3d_ext/.mim/tools"
+"model-index.yml" = "mmdet3d_ext/.mim/model-index.yml"
 
 [[tool.rye.sources]]
 name = "mmcv"
@@ -47,8 +48,16 @@ extend-select = ['Q', 'RUF100', 'C90', 'I']
 extend-ignore = [
     'E501',  # ignore line too long and let black handle it
     'E721',  # using type() instead of isinstance() - we use this in tests
+    'C901',
 ]
 flake8-quotes = {inline-quotes = 'single', multiline-quotes = 'double'}
 mccabe = { max-complexity = 13 }
 isort = { known-first-party = ['mmdet3d_ext'] }
 exclude = ['src/projects']
+
+[tool.black]
+color = true
+line-length = 120
+target-version = ['py310']
+skip-string-normalization = true
+skip-magic-trailing-comma = true
