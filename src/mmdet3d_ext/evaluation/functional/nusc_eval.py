@@ -1,5 +1,5 @@
 import os
-from typing import Callable
+from typing import Callable, Optional
 
 import numpy as np
 import tqdm
@@ -8,11 +8,69 @@ from nuscenes.eval.common.data_classes import EvalBoxes
 from nuscenes.eval.common.loaders import _get_box_class_field, load_prediction
 from nuscenes.eval.detection.data_classes import DetectionBox
 from nuscenes.eval.detection.evaluate import DetectionConfig, DetectionEval
-from nuscenes.eval.detection.utils import category_to_detection_name
 from nuscenes.eval.tracking.data_classes import TrackingBox
 from nuscenes.utils.data_classes import Box
 from nuscenes.utils.geometry_utils import points_in_box
 from pyquaternion import Quaternion
+
+DETECTION_NAMES = ['car', 'truck', 'bus', 'pedestrian', 'bicycle']
+
+class CustomDetectionConfig(DetectionConfig):
+    """ Data class that specifies the detection evaluation settings. """
+
+    def __init__(self,
+                 class_range: dict[str, int],
+                 dist_fcn: str,
+                 dist_ths: list[float],
+                 dist_th_tp: float,
+                 min_recall: float,
+                 min_precision: float,
+                 max_boxes_per_sample: int,
+                 mean_ap_weight: int):
+
+        assert set(class_range.keys()) == set(DETECTION_NAMES), 'Class count mismatch.'
+        assert dist_th_tp in dist_ths, 'dist_th_tp must be in set of dist_ths.'
+
+        self.class_range = class_range
+        self.dist_fcn = dist_fcn
+        self.dist_ths = dist_ths
+        self.dist_th_tp = dist_th_tp
+        self.min_recall = min_recall
+        self.min_precision = min_precision
+        self.max_boxes_per_sample = max_boxes_per_sample
+        self.mean_ap_weight = mean_ap_weight
+
+        self.class_names = self.class_range.keys()
+
+
+def category_to_detection_name(category_name: str) -> Optional[str]:
+    """
+    Default label mapping from nuScenes to nuScenes detection classes.
+    Note that pedestrian does not include personal_mobility, stroller and wheelchair.
+    :param category_name: Generic nuScenes class.
+    :return: nuScenes detection class.
+    """
+    detection_mapping = {
+        # 'movable_object.barrier': 'barrier',
+        'vehicle.bicycle': 'bicycle',
+        'vehicle.bus.bendy': 'bus',
+        'vehicle.bus.rigid': 'bus',
+        'vehicle.car': 'car',
+        # 'vehicle.construction': 'construction_vehicle',
+        # 'vehicle.motorcycle': 'motorcycle',
+        'human.pedestrian.adult': 'pedestrian',
+        'human.pedestrian.child': 'pedestrian',
+        'human.pedestrian.construction_worker': 'pedestrian',
+        'human.pedestrian.police_officer': 'pedestrian',
+        # 'movable_object.trafficcone': 'traffic_cone',
+        # 'vehicle.trailer': 'trailer',
+        'vehicle.truck': 'truck'
+    }
+
+    if category_name in detection_mapping:
+        return detection_mapping[category_name]
+    else:
+        return None
 
 
 def load_gt(
@@ -232,7 +290,7 @@ class NuScenesEval(DetectionEval):
     def __init__(
         self,
         nuscs: dict,
-        config: DetectionConfig,
+        config: CustomDetectionConfig,
         result_path: str,
         output_dir: str = None,
         lidar_key: str = 'LIDAR_TOP',

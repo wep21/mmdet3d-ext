@@ -11,11 +11,12 @@ from mmdet3d.structures import CameraInstance3DBoxes, LiDARInstance3DBoxes
 from mmengine import load
 from mmengine.evaluator import BaseMetric
 from mmengine.logging import MMLogger
-from nuscenes.eval.common.config import DetectionConfig
 from nuscenes.eval.detection.constants import DETECTION_NAMES
 from nuscenes.utils.data_classes import Box as NuScenesBox
 
 from mmdet3d_ext.registry import METRICS
+
+from ..functional.nusc_eval import CustomDetectionConfig
 
 
 @METRICS.register_module()
@@ -90,14 +91,14 @@ class NuScenesMetric(_NuScenesMetric):
     CLASS_DETECTION_RANGE = {
         'car': 75,
         'truck': 75,
-        'trailer': 75,
+        # 'trailer': 75,
         'bus': 75,
-        'construction_vehicle': 75,
+        # 'construction_vehicle': 75,
         'bicycle': 75,
-        'motorcycle': 75,
+        # 'motorcycle': 75,
         'pedestrian': 75,
-        'traffic_cone': 0,
-        'barrier': 0,
+        # 'traffic_cone': 0,
+        # 'barrier': 0,
     }
 
     def __init__(
@@ -146,7 +147,7 @@ class NuScenesMetric(_NuScenesMetric):
             'max_boxes_per_sample': 500,
             'mean_ap_weight': 5,
         }
-        self.eval_detection_configs = DetectionConfig.deserialize(eval_config_dict)
+        self.eval_detection_configs = CustomDetectionConfig.deserialize(eval_config_dict)
 
     def process(self, data_batch: dict, data_samples: Sequence[dict]) -> None:
         """Process one batch of data samples and predictions.
@@ -414,7 +415,7 @@ class NuScenesMetric(_NuScenesMetric):
 
 def lidar_nusc_box_to_global(
         info: dict, boxes: List[NuScenesBox], classes: List[str],
-        eval_configs: DetectionConfig) -> List[NuScenesBox]:
+        eval_configs: CustomDetectionConfig) -> List[NuScenesBox]:
     """Convert the box from ego to global coordinate.
 
     Args:
