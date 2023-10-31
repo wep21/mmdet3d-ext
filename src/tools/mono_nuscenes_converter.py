@@ -558,7 +558,8 @@ class GTDatabaseCreater:
         single_db_infos = dict()
         example = self.pipeline(input_dict)
         annos = example['ann_info']
-        image_idx = example['sample_idx']
+        # image_idx = example['sample_idx']
+        image_idx = example['idx']
         points = example['points'].numpy()
         gt_boxes_3d = annos['gt_bboxes_3d'].numpy()
         names = [
@@ -660,6 +661,7 @@ class GTDatabaseCreater:
             input_dict = self.dataset.get_data_info(i)
             input_dict['box_type_3d'] = self.dataset.datasets[0].box_type_3d
             input_dict['box_mode_3d'] = self.dataset.datasets[0].box_mode_3d
+            input_dict['idx'] = i 
             return input_dict
 
         multi_db_infos = mmengine.track_parallel_progress(
