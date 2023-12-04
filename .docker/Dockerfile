@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.7.1-devel-ubuntu22.04
+FROM nvidia/cuda:12.1.0-devel-ubuntu22.04
 
 ENV TORCH_CUDA_ARCH_LIST="6.0 6.1 7.0 7.5 8.0 8.6+PTX" \
     TORCH_NVCC_FLAGS="-Xfatbin -compress-all" \
@@ -15,7 +15,7 @@ COPY README.md .
 COPY pyproject.toml .
 
 RUN pip install --no-cache-dir -U pip==23.2.1
-RUN pip install --no-cache-dir mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu117/torch2.0/index.html
+RUN pip install --no-cache-dir mmcv==2.1.0 -f https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html
 RUN pip install --no-cache-dir -e . && rm -rf README.md pyproject.toml
 
 COPY src .
